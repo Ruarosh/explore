@@ -1,0 +1,104 @@
+with regard to 的缩写，意思是“关于”。
+also known as =A.K.A意思是:"又叫做..." "都称呼为......" "正如你所知道的"
+simultaneous	  同时的
+inevitable		　　不可避免的
+inherent		  天生的　固有的
+overhead		  额外开销
+successive		　　连续的
+intersect		  交叉;横断
+cater for		  迎合;提供饮食及服务
+feasible		  可行的
+readily			  乐意地;快捷地;轻而易举地
+propagate		  繁衍 传播
+hypotheses        假设
+(by) inducton 	  归纳
+omit		  忽略
+emit 		  发出
+lexion            词典
+phoneme           音素，最小的声音单元
+hybrid            混合
+straightforward   直截了当的，简单的
+arcs              弧度，表示网络中的一条边
+stochastic        随机
+lattice           网格
+phenomenon        现象，事件
+acoustic          声音的
+modular           模块化
+synchronous	  同步
+asynchronous      异步
+CER 		  字错误率(Character Error Rate) 
+WER               词错误率(WER，Word Error Rate)
+PER		  音节错误率(PER, Phone Error Rate)
+disambiguation    解疑，消除模棱两可情况
+fuse 		  融合，融化
+indice		  指数;标记体
+corpus		  语料库
+phoneme   	  音素
+novel event       新的事件
+heuristic	  启发式的
+perplexity	  困惑;混乱;复杂;困难
+pairwise	  成对[双]地，两个两个地
+resort		  求助，凭借，诉诸;热闹场所，娱乐场，度假胜地;常去;采用的办法，求助[凭借]的对象
+intuitive	  直观的;直觉的;凭直觉获知的
+phonetic	  语音的
+characterized	  具有特征的；以…为特征
+temporal	  世俗的；暂时的
+consensus	　　共识
+heterogeneous	  异构
+negligible	  可以忽略不计的
+latency		   延迟；潜在音素
+acyclic			无环的
+cyclic			有环，循环的
+higher order	高阶的
+
+
+
+
+
+
+
+
+
+
+==================================================
+LVCSR             大词汇量连续语音识别（Large vocabulary continuous speech recognition）
+partial order	  偏序关系
+
+
+
+
+
+
+
+
+Our clustering algorithm has two stages. We first merge only equivalence classes corresponding to instances of the same word (intra-word clustering), and
+then start grouping together heterogeneous equivalence classes (inter-word clustering), based on the phonetic similarity of the word components.
+
+
+
+Each equivalence class corresponds to one “position” in the alignment
+and the members of a class are those word hypotheses that are “aligned to each other“
+
+We initialize the link equivalence such that each initial class consists of all the links with the same starting and ending times and the same word label
+
+1 The purpose of this step is to group together all the links corresponding to same word instance
+	SIM(E 1 , E 2 ) =
+　	max overlap(e 1 , e 2 ) · p(e 1 ) · p(e 2 )
+
+2 this step we group together equivalence classes corresponding to different words. Candidates for merging are any two classes that are not in relation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
