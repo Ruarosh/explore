@@ -1,0 +1,23 @@
+顺序容器包括vector、deque、list、forward_list、array、string，所有顺序容器都提供了快速顺序访问元素的能力。
+关联容器中的元素是按关键字来保存和访问的。与之相对，顺序容器中的元素是按它们在容器中的位置来顺序保存和访问的。关联容器也是模板。
+
+
+std::set 自定义() < 的重载函
+https://www.cnblogs.com/litaozijin/p/6665595.html
+
+STL大致分为六大模块：容器（container），算法（algorithm），迭代器（iterator），仿函数（functor），配接器（adapter），配置器（allocator）。
+
+std::count   返回值为指定值的数量
+                    count(v.begin(), v.end(), 5)
+std::count_if 返回符合一定条件的元素个数。compare()函数是自定义的，返回值是true就是表示符合要求
+                    count_if(V.begin(),V.end(),comp)
+std::less   比大小
+                    std::less<int>()(3, 4)
+                    std::sort (foo, foo+5, std::less<int>());
+
+仿函数: 都是传值，而不是传址的。因此算法并不会改变随参数而来的仿函数的状态。
+plus，minus，multiplies，divides，modulus，equal_to，not_equal_to，greater
+
+
+
+
