@@ -14,10 +14,47 @@ std::count_if 返回符合一定条件的元素个数。compare()函数是自定
 std::less   比大小
                     std::less<int>()(3, 4)
                     std::sort (foo, foo+5, std::less<int>());
+std::copy(InIt first, InIt last, OutIt x) //数据量较大时，copy的效率比自写for循环更高
+        fist [IN]: 要拷贝元素的首地址
+        last [IN]:要拷贝元素的最后一个元素的下一个地址
+        x [OUT] : 拷贝的目的地的首地址
+        std::copy(v1.begin(), v1.end(), std::back_inserter(v3)); // 当v3的size小于v1时，依然可以完成拷贝
+
+generate
+        array<int,8> t1;
+        generate(t1.begin(),t1.end(),[](){return rand()%100;});
+        generate_n(t1.begin(),5,[](){return rand()%1000;});
+        generate_n(back_inserter(t1),)
+        for_each(t1.begin(),t1.end(),[](int i){cout<<i<<endl;});
+
+for_each
+template<typename InputIterator, typename Function>
+Function for_each(InputIterator beg, InputIterator end, Function f) {
+  while(beg != end) 
+    f(*beg++);
+}
+
+ptr_fun
+
+bind1st，bind2nd
+int a[] = {1, 2, 100, 200};           std::vector< int> arr(a, a + 4);
+// 移除所有小于100的元素
+arr.erase( std::remove_if( arr.begin(),  arr.end(), std::bind2nd( std::less< int>(), 100)), arr.end());
+
+// 移除所有大于100的元素
+arr.erase( std::remove_if( arr.begin(),  arr.end(), std::bind1st( std::less< int>(), 100)), arr.end());
+
+// 移除所有小于等于100的元素
+arr.erase( std::remove_if( arr.begin(),  arr.end(), std::not1(std::bind2nd( std::greater< int>(), 100))), arr.end());
+not1是否定返回值是单目的函数，std中还有not2它是否定返回值是双目的函数
 
 仿函数: 都是传值，而不是传址的。因此算法并不会改变随参数而来的仿函数的状态。
-plus，minus，multiplies，divides，modulus，equal_to，not_equal_to，greater
+plus，minus，multiplies，divides，modulus，equal_to，not_equal_to，greater, less, less_equal, greater_equal, 
+logical_not(!), logical_and(&&), logical_or(||)
 
-
-
+迭代器
+https://blog.csdn.net/tianxiaolu1175/article/details/48413163/
+back_inserter, 支持push_back的容器：vector,deque,list
+front_inserter, 支持push_front的容器：deque,list
+inserter(container,pos), 支持insert的容器，将元素插入第二个参数所指的位置，关联式容器中，必须慎重使用
 
