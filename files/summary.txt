@@ -1,3 +1,5 @@
+cpp官网 http://www.cplusplus.com/
+
 顺序容器包括vector、deque、list、forward_list、array、string，所有顺序容器都提供了快速顺序访问元素的能力。
 关联容器中的元素是按关键字来保存和访问的。与之相对，顺序容器中的元素是按它们在容器中的位置来顺序保存和访问的。关联容器也是模板。
 
@@ -6,6 +8,11 @@ std::set 自定义() < 的重载函
 https://www.cnblogs.com/litaozijin/p/6665595.html
 
 STL大致分为六大模块：容器（container），算法（algorithm），迭代器（iterator），仿函数（functor），配接器（adapter），配置器（allocator）。
+
+仿函数
+一种在模板类编程时的封装手法，本质上的仿函数是一种类(class)。但是实际起到的是一种函数的作用，在这个所谓的class中通常都是一个operator()的重载,这个重载是根据programmer的需求产生的，通过调用类的构造函数就使得这个类有了函数的行为。进一步的解释就是，在写代码的时候，总有一部分代码的重用率非常高，通常的情况下我们会把这段代码写成一个顶层函数放在类外，任何的成员函数都可以去调用或访问，但是在编写代码的同时也会产生大量的全局变量，很难维护。为了提高代码的内聚度，我们选择将这部分代码封装到一个类中，通过调用类的含参或默认构造函数来执行这段代码，我们将这种做法成为仿函数。
+
+std::vector::cbegin和std::vector::cend    c means const
 
 std::count   返回值为指定值的数量
                     count(v.begin(), v.end(), 5)
@@ -19,6 +26,14 @@ std::copy(InIt first, InIt last, OutIt x) //数据量较大时，copy的效率�
         last [IN]:要拷贝元素的最后一个元素的下一个地址
         x [OUT] : 拷贝的目的地的首地址
         std::copy(v1.begin(), v1.end(), std::back_inserter(v3)); // 当v3的size小于v1时，依然可以完成拷贝
+
+std::find
+* find(v.begin(),v.end(),num_to_find);//返回iterator
+* int *nums; int* result = find( nums + start, nums + end, num_to_find );//返回索引
+
+std::ends   '\0' windows和linux对'\0'的处理方式不同,在windows中会输出一个空格，而linux下则不会有什么输出。 
+std::endl   换行
+std::flush
 
 generate
         array<int,8> t1;
@@ -34,7 +49,48 @@ Function for_each(InputIterator beg, InputIterator end, Function f) {
     f(*beg++);
 }
 
-ptr_fun
+
+
+for_each传参   <这里无法传入字串或者别的指针的类型>
+//blog.csdn.net/u014613043/article/details/50619254/
+int a[] = {1, 3, 4, 5};
+vector<int> vc(a, a+sizeof(a)/sizeof(int))e
+== 1 ==
+template<typename T, char str>
+void play(T elem){cout<<str<<elem<<endl;}
+for_each(vc.begin(), vc.end(), play<int, 'a'>);
+
+== 2 ==
+template<typename T, typename V>
+for_each(vc.begin(), vc.end(), Play<int, const char*>("Element "));
+
+C++中有三类适配器，分别是容器适配器，迭代器适配器和函数适配器
+== 容器适配器 ==
+https://blog.csdn.net/qq_37521235/article/details/77386871
+C++提供了三种容器适配器（container adapter）：stack，queue和priority_queue。stack和queue基于deque实现，priority_queue基于vector实现。
+
+==
+迭代适配器:插入器是一种迭代器适配器，带有一个容器参数，并生成一个迭代器，提供了三种插入器back_inserter(容器),front_inserter(容器),inserter(容器，位置)
+
+迭代器适配器分为以下几类
+  reverse iterator : 反向迭代器, 从后向前递增, 支持双向迭代的容器通常都有rbegin(), rend()这对接口。它们的返回值就是reverse iterator。 auto rbeg = v.rbegin(); rbeg++;
+  insert iterator : 插入型迭代器
+  stream iterator : 流迭代器
+  move iterator : 移动型迭代器
+
+
+
+
+== 函数配接器(函数 适配器) ==
+std::mem_fun和std::mem_fun_ref所实现的是相同的功能，可以这么理解之间的差异，mem_fun用于处理容器对象指针，而mem_fun_ref用于处理容器对象实体。
+
+ptr_fun是将一个普通的函数适配成一个仿函数(functor)
+        int sum(int arg1, int arg2)  
+        bind1st(ptr_fun(sum), 1)(2); // the same as sum(1,2)  
+        bind2nd(ptr_fun(sum), 1)(2); // the same as sum(2,1)  
+bind1st将给定值绑定到二元函数对象的第一个实参
+bind2nd将给定值绑定到二元函数对象的第二个实参
+
 
 bind1st，bind2nd
 int a[] = {1, 2, 100, 200};           std::vector< int> arr(a, a + 4);
@@ -48,13 +104,23 @@ arr.erase( std::remove_if( arr.begin(),  arr.end(), std::bind1st( std::less< int
 arr.erase( std::remove_if( arr.begin(),  arr.end(), std::not1(std::bind2nd( std::greater< int>(), 100))), arr.end());
 not1是否定返回值是单目的函数，std中还有not2它是否定返回值是双目的函数
 
+erase(iter++)的原理解释
+https://blog.csdn.net/liuzhi67/article/details/50950843
+主要是容器的迭代器会重载这个++操作，先自增iter,再用旧iter执行erase操作
+
+因为后缀++会比前缀++的操作多一个临时变量，并且其是以传值复制的方式返回给调用方，所以一般而言后缀++的效率会比前缀++效率低一些
+
 仿函数: 都是传值，而不是传址的。因此算法并不会改变随参数而来的仿函数的状态。
-plus，minus，multiplies，divides，modulus，equal_to，not_equal_to，greater, less, less_equal, greater_equal, 
+plus，minus，multiplies，divides，modulus(取模操作10%3)，equal_to，not_equal_to，greater, less, less_equal, greater_equal, 
 logical_not(!), logical_and(&&), logical_or(||)
 
 迭代器
 https://blog.csdn.net/tianxiaolu1175/article/details/48413163/
+https://blog.csdn.net/yangshun2008/article/details/7942544
 back_inserter, 支持push_back的容器：vector,deque,list
 front_inserter, 支持push_front的容器：deque,list
 inserter(container,pos), 支持insert的容器，将元素插入第二个参数所指的位置，关联式容器中，必须慎重使用
 
+STL remove和erase的原理
+最后remove返回"指向最后一个   '有用'   元素的iterator",但是在remove算法过程中，并没有修改原容器的size,以及end()。
+https://blog.csdn.net/wangwenwen/article/details/7583986
