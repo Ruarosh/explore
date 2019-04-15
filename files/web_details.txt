@@ -51,7 +51,8 @@ https://blog.csdn.net/hyb612/article/details/80473439
 系统调用和函数调用的区别
 https://blog.csdn.net/qq_31759205/article/details/80602357
 
-
+C++ ABI (application binary interface, 二进制接口) 
+https://www.oracle.com/technetwork/cn/articles/servers-storage-dev/stablecplusplusabi-333927-zhs.html#c++_abi
 
 
 
