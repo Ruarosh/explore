@@ -281,6 +281,17 @@ POD全称Plain Old Data。通俗的讲，一个类或结构体通过二进制拷
 type traits, 类型的特征:        
 https://blog.csdn.net/garfee_guan/article/details/12234011
 
+== 多线程 ==
+TODO:
 
+
+C++11 多线程 future/promise简介
+https://blog.csdn.net/jiange_zh/article/details/51602938
+https://www.cnblogs.com/haippy/p/3239248.html
+https://www.jianshu.com/p/e830f888b4b4
+future_status有三种状态：
+        deferred：异步操作还没开始
+        ready：异步操作已经完成
+        timeout：异步操作超时
 
 

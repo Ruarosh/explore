@@ -51,14 +51,22 @@ https://blog.csdn.net/hyb612/article/details/80473439
 系统调用和函数调用的区别
 https://blog.csdn.net/qq_31759205/article/details/80602357
 
-C++ ABI (application binary interface, 二进制接口) 
+C++ ABI (application binary interface, 应用二进制接口) 
 https://www.oracle.com/technetwork/cn/articles/servers-storage-dev/stablecplusplusabi-333927-zhs.html#c++_abi
+https://www.oracle.com/technetwork/cn/articles/servers-storage-dev/stablecplusplusabi-333927-zhs.html#instability
 
+glibc和libc关系
+https://blog.csdn.net/guangmingsky/article/details/80965694
+* glibc是linux下面c标准库的实现，即GNU C Library。后来逐渐成为了Linux的标准c库，而Linux下原来的标准c库Linux libc逐渐不再被维护。Linux下面的标准c库不仅有这一个，glibc无疑是用得最多的。
+* ANSI C 函数库是基本的 C 语言函数库，包含了 C 语言最基本的库函数。各种支持 C 语言的 IDE 中都是有的。
 
+Scott Meyers  C++ 作者
 
+《Effective STL》学习笔记
+https://www.cnblogs.com/virusolf/p/4903717.html
 
-
-
+C++各种推荐书籍
+http://www.cnblogs.com/adrian-1983/p/7822097.html
 
 
 
