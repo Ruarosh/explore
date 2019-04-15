@@ -1,0 +1,286 @@
+                 cpp1 summary
+**************************************************
+https://www.cnblogs.com/duguochao/p/5237991.html
+RAII (Resource Acquisition Is Initialization), https://www.cnblogs.com/zhangyunkui/archive/2009/11/13/1602514.html
+ABI
+
+**************************************************
+== key words==
+* auto
+* decltype
+      int i;
+      double t;
+      struct A { double x; };
+      const A* a = new A();
+      decltype(a) x1; // x1 is A *
+      decltype(i) x2; // x2 is int
+      decltype(a->x) x3; // x3 is double
+      decltype((a->x)) x4 = t; // x4 is double&
+
+* nullptr
+智能指针 https://www.cnblogs.com/wxquare/p/4759020.html
+* shared_ptr
+注意不要用一个原始指针(.get())初始化多个shared_ptr，否则会造成二次释放同一内存
+shared_ptr<T> ptr(new T); // T 可以是 int ,char, 类名等各种类型
+多个shared_ptr对象可以同时托管一个指针，系统会维护一个托管计数。当无shared_ptr托管该指针时， delete该指针。
+shared_ptr对象不能托管指向动态分配的数组的指针，否则程序运行会出错
+    shared_ptr<A> sp1(new A(2)); //sp1托管A(2)
+    shared_ptr<A> sp2(sp1); //sp2也托管 A(2)
+    shared_ptr<A> sp3 = sp1;
+    cout << (*sp3).n << endl;
+    A * p = sp1.get(); //p 指向 A(2)
+    sp1.reset();
+    shared_ptr<A> sp5;
+    sp5.reset();// 会崩溃，因为没有托管任何指针
+* unique_ptr
+“唯一”拥有其所指对象，同一时刻只能有一个unique_ptr指向给定对象（通过禁止拷贝语义、只有移动语义来实现）
+    {
+        std::unique_ptr<int> uptr(new int(10));  //绑定动态对象
+        //std::unique_ptr<int> uptr2 = uptr;  //不能賦值
+        //std::unique_ptr<int> uptr2(uptr);  //不能拷貝
+        std::unique_ptr<int> uptr2 = std::move(uptr); //轉換所有權
+        uptr2.release(); //释放所有权
+    }
+    //离开作用域即释放所指空间
+
+
+* weak_ptr
+它不具有普通指针的行为，没有重载operator*和->,它的最大作用在于协助shared_ptr工作，像旁观者那样观测资源的使用情况。
+可以避免循环引用的问题：
+class ClassB;
+
+class ClassA
+{
+public:
+    ClassA() { cout << "ClassA Constructor..." << endl; }
+    ~ClassA() { cout << "ClassA Destructor..." << endl; }
+    weak_ptr<ClassB> pb;  // 在A中引用B
+};
+
+class ClassB
+{
+public:
+    ClassB() { cout << "ClassB Constructor..." << endl; }
+    ~ClassB() { cout << "ClassB Destructor..." << endl; }
+    weak_ptr<ClassA> pa;  // 在B中引用A
+};
+
+int main() {
+    shared_ptr<ClassA> spa = make_shared<ClassA>();
+    shared_ptr<ClassB> spb = make_shared<ClassB>();
+    spa->pb = spb;
+    spb->pa = spa;
+    // 函数结束，思考一下：spa和spb会释放资源么？因为没改变shared_ptr的引用计数，此时引用计数为1，超过作用域后自动释放
+}
+
+== C++ 11 Lambda表达式 ==
+https://www.cnblogs.com/DswCnblog/p/5629165.html
+
+[capture list] (params list) mutable exception-> return type { function body }
+[] 值传递(空,=,指定值)，引用传递&，隐式传递(=)
+
+参数在函数末端指定
+auto x = [](int a){cout << a << endl;}(123); 
+
+函数返回值可以根据return 自动推断
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int main()
+{
+    vector<int> a { 1,2,3,4};
+    int total = 0;
+    for_each(a.begin(),a.end(),[&](int & x) {total += x; x*=2;});
+    cout << total << endl; //输出 10
+    for_each(a.begin(),a.end(),[ ](int x) { cout << x << " ";});
+    return 0;
+}
+//程序输出结果：
+//10
+//2 4 6 8
+
+== loop ==
+map<string, int> m{{"a", 1}, {"b", 2}, {"c", 3}};
+for (auto &p : m){
+    cout<<p.first<<" : "<<p.second<<endl;
+}
+
+== 变长參数的模板 tuple ==
+以前只有pair
+auto p = make_pair(1, "C++ 11");
+
+tuple构造变长结构
+auto t1 = make_tuple(1, 2.0, "C++ 11");
+auto t2 = make_tuple(1, 2.0, "C++ 11", {1, 0, 2});
+
+变长参数
+template<typename head, typename... tail>
+void Print(Head head, typename... tail) {
+    cout<< head <<endl;
+    Print(tail...);
+}
+
+Print(1, 1.0, "C++11");
+
+== 参数初始化 大括号 ==
+int arr[3]{1, 2, 3};
+vector<int> iv{1, 2, 3};
+map<int, string>{{1, "a"}, {2, "b"}};
+string str{"Hello World"};
+
+成员默认初始化
+class B
+{
+public:
+    int m = 1234;
+    int n;
+};
+
+== 右值引用和move语义 ==
+* 右值：一般来说，不能取地址的表达式，就是右值，能取地址的，就是左值; 左值可以赋值，右值不可以赋值
+class A { };
+A & r = A(); // error , A()是无名变量，是右值
+A && r = A(); //ok, r 是右值引用
+
+主要目的是提高程序运行的效率，减少需要进行深拷贝的对象进行深拷贝的次数
+
+
+* move
+std::move语句可以将左值变为右值而避免拷贝构造
+总之尽量给类添加移动构造和移动赋值函数，而减少拷贝构造和拷贝赋值的消耗。 移动构造，移动赋值要加上noexcept，用于通知标准库不抛出异常。
+class A
+{
+public:
+    A() { std::cout << "Constructor" << std::endl; }
+    A(const A&) { std::cout << "Copy Constructor" << std::endl; }
+    A(const A&&) { std::cout << "Move Constructor" << std::endl; }
+    ~A() {}
+};
+
+static A getA()
+{
+    A a;
+    return a;
+}
+
+int main()
+{
+    A a = getA();
+    
+    return 0;
+}
+
+== 无序容器 ==
+#include <iostream>
+#include <string>
+#include <unordered_map>
+using namespace std;
+int main()
+{
+    unordered_map<string,int> turingWinner; //图灵奖获奖名单
+    turingWinner.insert(make_pair("Dijkstra",1972));
+    turingWinner.insert(make_pair("Scott",1976));
+    turingWinner.insert(make_pair("Wilkes",1967));
+    turingWinner.insert(make_pair("Hamming",1968));
+    turingWinner["Ritchie"] = 1983;
+    string name;
+    cin >> name; //输入姓名
+    4
+        unordered_map<string,int>::iterator p = turingWinner.find(name);
+    //据姓名查获奖时间
+    if( p != turingWinner.end())
+        cout << p->second;
+    else
+        cout << "Not Found" << endl;
+    return 0;
+}
+//哈希表插入和查询的时间复杂度几乎是常数
+
+== 正则表达式 ==
+#include <iostream>
+#include <regex> //使用正则表达式须包含此文件
+using namespace std;
+int main()
+{
+    regex reg("b.?p.*k");
+    cout << regex_match("bopggk",reg) <<endl; //输出 1, 表示匹配成功
+    cout << regex_match("boopgggk",reg) <<endl; //输出 0, 表示匹配失败
+    cout << regex_match("b pk",reg) <<endl; //输出 1, 表示匹配成功
+    regex reg2("\\d{3}([a-zA-Z]+).(\\d{2}|N/A)\\s\\1");
+    string correct="123Hello N/A Hello";
+    string incorrect="123Hello 12 hello";
+    cout << regex_match(correct,reg2) <<endl; //输出 1, 表示匹配成功
+    cout << regex_match(incorrect,reg2) << endl; //输出 0, 表示匹配失败
+}
+
+== mem_fun 和 mem_fun_ref ==
+https://blog.csdn.net/coolwriter/article/details/81533226
+
+== override和final ==
+override，表示函数必须重写基类中的虚函数，如果派生类没有重写到将编译报错。
+指定了子类的这个虚函数是重写的父类的，如果你名字不小心打错了的话，编译器报错
+
+final，表示派生类不应当重写这个虚函数，如果派生类重写了基类的虚函数将编译报错, 所以重写虚函数加上override。
+当不希望某个类被继承，或不希望某个虚函数被重写，可以在类名和虚函数后添加final关键字，添加final关键字后被继承或重写，编译器会报错。
+
+class B final : A // 指明B是不可以被继承的
+{
+    void foo() override; // Error: 在A中已经被final了
+};
+
+== Strongly-typed enums 强类型枚举 ==
+https://zhuanlan.zhihu.com/p/21722362
+解释:
+* old enum
+enum Direction {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT};
+// error!
+enum WindowsCorner {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT};
+
+* new enum
+enum class Options {None, One, All};
+Options o = Options::All;
+
+* underlying_type 生成枚举类型的基础整型类型
+http://www.cplusplus.com/reference/type_traits/underlying_type/
+  
+== 非成员begin 和 end ==
+
+int arr[] = {1,2,3};
+std::for_each(std::begin(arr), std::end(arr), [](int n) {std::cout << n << std::endl;});
+auto is_odd = [](int n) {return n%2==1;};
+auto pos = std::find_if(std::begin(arr), std::end(arr), is_odd);
+if(pos != std::end(arr))
+    std::cout << *pos << std::endl;
+
+
+== static_assert和 type traits ==
+static_assert提供一个编译时的断言检查。如果断言为真，什么也不会发生。如果断言为假，编译器会打印一个特殊的错误信息。
+
+https://www.cnblogs.com/zzyoucan/p/3918614.html
+POD全称Plain Old Data。通俗的讲，一个类或结构体通过二进制拷贝后还能保持其数据不变，那么它就是一个POD类型。
+平凡的定义
+1.有平凡的构造函数
+2.有平凡的拷贝构造函数
+3.有平凡的移动构造函数
+4.有平凡的拷贝赋值运算符
+5.有平凡的移动赋值运算符
+6.有平凡的析构函数
+7.不能包含虚函数
+8.不能包含虚基类
+
+标准布局的定义
+1.所有非静态成员有相同的访问权限
+2.继承树中最多只能有一个类有非静态数据成员
+3.子类的第一个非静态成员不可以是基类类型
+4.没有虚函数
+5.没有虚基类
+6.所有非静态成员都符合标准布局类型
+
+type traits, 类型的特征:        
+https://blog.csdn.net/garfee_guan/article/details/12234011
+
+
+
+
