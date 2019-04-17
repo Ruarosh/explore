@@ -12,6 +12,13 @@ STL大致分为六大模块：容器（container），算法（algorithm），�
 仿函数
 一种在模板类编程时的封装手法，本质上的仿函数是一种类(class)。但是实际起到的是一种函数的作用，在这个所谓的class中通常都是一个operator()的重载,这个重载是根据programmer的需求产生的，通过调用类的构造函数就使得这个类有了函数的行为。进一步的解释就是，在写代码的时候，总有一部分代码的重用率非常高，通常的情况下我们会把这段代码写成一个顶层函数放在类外，任何的成员函数都可以去调用或访问，但是在编写代码的同时也会产生大量的全局变量，很难维护。为了提高代码的内聚度，我们选择将这部分代码封装到一个类中，通过调用类的含参或默认构造函数来执行这段代码，我们将这种做法成为仿函数。
 
+std::ref （引用）  std::cref ( const ref)
+http://www.cnblogs.com/jiayayao/p/6527713.html
+主要是考虑函数式编程（如std::bind）在使用时，是对参数直接拷贝，而不是引用
+
+void f(int& n1, int& n2, const int& n3)
+std::bind(f, n1, std::ref(n2), std::cref(n3));   // bind使用的参数n1是拷贝，而不是引用，才用std::ref使用引用
+
 std::vector::cbegin和std::vector::cend    c means const
 
 std::count   返回值为指定值的数量
@@ -153,3 +160,7 @@ for_each(fv.begin(), fv.end(), mem_fn(&Foo::print));            // obj
 https://blog.csdn.net/helinlin007/article/details/51540182
 基类的析构函数必须为virtual
 https://blog.csdn.net/gochenguowei/article/details/79682681
+
+
+CPU问题分析
+https://blog.csdn.net/u013870094/article/details/78506596

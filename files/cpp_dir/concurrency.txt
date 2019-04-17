@@ -1,0 +1,21 @@
+* key
+并发是有若干个任务，相互穿插着执行。
+并行是只有一个任务，同时执行这个任务的不同部分（或者相同部分不同上下文）。
+使用并发原因: 关注点分离(SOC)和性能。
+
+C++标准库中有很多资源占有(resource-owning)类型, 比如 std::ifstream, std::unique_ptr  还有 std::thread 都是可移动,但不可拷贝。
+
+* key
+线程之间的锁有：互斥锁、条件锁、自旋锁、读写锁、递归锁。一般而言，锁的功能越强大，性能就会越低。
+https://blog.csdn.net/xy_cpp/article/details/81910513
+
+* key
+读书笔记，很详细
+https://blog.csdn.net/xy_cpp/article/details/80646443
+
+* key
+活锁的产生,两个线程同时尝试修改数据结构,但每个线程所做的修改操作都会让另一个线程重启,所以两个线程就会陷入循环,多次的尝试完成自己的操作。
+
+* key
+互斥量和信号量的区别
+https://www.cnblogs.com/alinh/p/6905221.html

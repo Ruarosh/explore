@@ -294,4 +294,5 @@ future_status有三种状态：
         ready：异步操作已经完成
         timeout：异步操作超时
 
-
+C++中有几种可调用对象：函数，函数指针，lambda表达式，bind创建的对象，以及重载了函数调用符的类。
+https://www.cnblogs.com/Philip-Tell-Truth/p/5814213.html

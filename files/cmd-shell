@@ -1,3 +1,9 @@
+shell脚本转二进制文件
+shc -T -f
+
+图形计算器
+gnome-calculator
+
 objdump -d -j .text test 
 
 # ORS 分隔符，默认是换行；　
