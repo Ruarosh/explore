@@ -9,5 +9,8 @@ explicit使用            explicit.cpp
 lock_guard              lock_guard.cpp
 unique_lock             unique_lock.cpp //相对lock_guard，有更多更灵活的接口可使用
 lock                    lock介绍，可以同时锁住多个对象，内部避免死锁
+atomic                  atomic.cpp
+promise_future          promise_future.cpp
+async                   async.cpp
 
 
