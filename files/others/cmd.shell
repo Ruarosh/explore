@@ -1,0 +1,565 @@
+shell脚本转二进制文件
+shc -T -f
+
+图形计算器
+gnome-calculator
+
+objdump -d -j .text test 
+
+# ORS 分隔符，默认是换行；　
+childs=`ps -ef | awk -v father=1 'BEGIN{ ORS=" "; } $3==father{ print $2; }'`
+
+#数组
+${#childs[@]}
+
+
+
+
+fstdraw [--isymbols=phones.txt --osymbols=words.txt] L.fst | dot –Tps  |  ps2pdf – L.pdf
+实际占内存   grep /proc/$id/status VmSize
+
+只有第9种信号(SIGKILL)才可以无条件终止进程，其他信号进程都有权利忽略, 下面是常用的信号：
+HUP    1    终端断线
+INT     2    中断（同 Ctrl + C）
+QUIT    3    退出（同 Ctrl + \）
+TERM   15    终止
+KILL    9    强制终止
+CONT   18    继续（与STOP相反， fg/bg命令）
+STOP    19    暂停（同 Ctrl + Z）
+
+
+
+readelf -h ./fst.local
+
+xargs   
+
+find . -name ".svn" | xargs rm -Rf
+
+-exec (***********)
+
+
+sftp -oPort=5221  wj145@222.92.116.126
+
+
+
+sar -B 1 200
+ctrl+shift+c 复制
+
+
+GCC中-O1 -O2 -O3 优化的原理是什么？
+openMP
+
+http://www.danielpovey.com/files/2018_interspeech_gpu_wfst.pdf
+https://github.com/chenzhehuai/kaldi/tree/gpu-decoder
+
+
+gcc test.c -g
+objdump -S a.out   查看对应汇编代码
+
+python将文本文件转为二进制文件，生成结果是后缀为.pyo
+python -O -m py_compile rbin2.py
+
+readelf -S file |grep debug  查看是否是debug版本
+
+为了完整起见，我这里再用一些例子加以说明 ${ } 的一些特异功能： 假设我们定义了一个变量为： file=/dir1/dir2/dir3/my.file.txt 我们可以用 ${ } 分别替换获得不同的值： 
+${file#*/}：拿掉第一条 / 及其左边的字符串：dir1/dir2/dir3/my.file.txt 
+${file##*/}：拿掉最后一条 / 及其左边的字符串：my.file.txt 
+${file#*.}：拿掉第一个 . 及其左边的字符串：file.txt 
+${file##*.}：拿掉最后一个 . 及其左边的字符串：txt 
+${file%/*}：拿掉最后条 / 及其右边的字符串：/dir1/dir2/dir3 
+${file%%/*}：拿掉第一条 / 及其右边的字符串：(空值) 
+${file%.*}：拿掉最后一个 . 及其右边的字符串：/dir1/dir2/dir3/my.file 
+${file%%.*}：拿掉第一个 . 及其右边的字符串：/dir1/dir2/dir3/my
+
+记忆的方法为： 
+[list]# 是去掉左边(在鉴盘上 # 在 $ 之左边) 
+% 是去掉右边(在鉴盘上 % 在 $ 之右边) 
+单一符号是最小匹配﹔两个符号是最大匹配。[/list] 
+${file:0:5}：提取最左边的 5 个字节：/dir1 
+${file:5:5}：提取第 5 个字节右边的连续 5 个字节：/dir2
+
+pushd和popd的+n和-n
+cd -命令回到之前的目录
+
+shell cut tr
+
+top显示进程状态
+进程状态.D(不可中断的睡眠状态)，R，S，T(跟踪 / 停止)，Z
+
+在已開的終端中新建一個 Tab，即 标签，可使用 Ctrl + Shift + T
+readlink -f file   获取绝对路径
+
+放在>后面的&，表示重定向的目标不是一个文件，而是一个文件描述符
+1 => stdout
+2 => stderr
+0 => stdin
+此处&>或者>&视作整体，分开没有单独的含义
+
+shell中算术运算
+c=$[$a*$b]
+c=$[$a+$b]
+c=$[$a/$b]   除法不支持浮点数　可以通过：num3=`echo "scale=2; $num1/$num2" | bc`　实现 scale控制小数点位数
+c=$[$a-$b]
+
+for i in {1..20}; do echo $i; done
+for i in 1 2 3 4 5; do echo $i; done
+for shname in `ls *.sh`
+for shname in `find . -type f -name "*.sh"`
+
+
+files="file1 file2 file3"
+for f in $files可以遍历
+for f in "a b c"只认为a b c是一个字符串
+
+只列出所有目录
+ls -d */
+
+
+#((语法循环--有点像C语法，但记得双括号
+for((i=1;i<100;i++))
+do
+    if((i%3==0))
+    then
+        echo $i
+        continue
+    fi
+done
+
+#seq形式 起始从1开始
+for i in `seq 100`
+do
+    if((i%3==0))
+    then
+        echo $i
+        continue
+    fi
+done
+
+#while循环注意为方括号[],且注意空格
+min=1
+max=100
+while [ $min -le $max ]
+do
+    echo $min
+    min=`expr $min + 1`
+done   
+
+#双括号形式，内部结构有点像C的语法，注意赋值：i=$(($i+1))
+i=1
+while(($i<100))
+do
+    if(($i%4==0))
+    then
+        echo $i
+    fi
+    i=$(($i+1))
+done
+
+-s : 果文件存在且文件大小大于零，则返回真
+-e : 如果 filename存在，则为真
+-d : 判断制定的是否为目录
+-z：判断制定的变量是否存在值
+-f：判断制定的是否为文件
+-L:判断制定的是否为符号链接
+-r：判断制定的是否可读
+-w:判断制定的是否可写
+-x：判断存在的对象是否可以执行
+-z string 	如果 string长度为零，则为真 	[ -z "$myvar" ]
+-n string 	如果 string长度非零，则为真 	[ -n "$myvar" ]
+
+
+变量 	含义
+$0 	当前脚本的文件名
+$n 	传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2。
+$# 	传递给脚本或函数的参数个数。
+$* 和 $@ 都表示传递给函数或脚本的所有参数:
+    不被双引号(" ")包含时，都以"$1" "$2" … "$n" 的形式输出所有参数。
+    但是当它们被双引号(" ")包含时，"$*" 会将所有的参数作为一个整体，以"$1 $2 … $n"的形式输出所有参数；"$@" 会将各个参数分开，以"$1" "$2" … "$n" 的形式输出所有参数。
+$? 	上个命令的退出状态，或函数的返回值。
+$$ 	当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。
+
+
+shell异常退出
+bash提供了一种方法，当bash接收到一个UNIX信号时，运行一个 命令或者一个函数。可以使用trap命令
+INT，TERM和EXIT。你可以使用-as来让traps恢复到初始状态。
+INT 	 Interrupt - 当有人使用Ctrl-C终止脚本时被触发
+TERM 	 Terminate - 当有人使用kill杀死脚本进程时被触发
+EXIT 	 Exit - 这是一个伪信号，当脚本正常退出或者set -e后因为出错而退出时被触发
+
+
+
+但是当它们被双引号(" ")包含时，"$*" 会将所有的参数作为一个整体，以"$1 $2 … $n"的形式输出所有参数；"$@" 会将各个参数分开，以"$1" "$2" … "$n" 的形式输出所有参数。
+
+Shell中的>/dev/null 2>&1 与 2>&1 >/dev/null 与&>/dev/null 的区别 
+http://blog.csdn.net/reyleon/article/details/11595985
+
+
+在Linux系统中执行某些操作时候，有时需要将当前任务暂停调至后台，或有时须将后台暂停的任务重启开启并调至前台，这一序列的操作将会使用到 jobs、bg、和 fg 三个命令以及两个快捷键来完成。
+ctrl + z 可以将一个正在前台执行的命令放到后台，并且暂停
+fg 将后台中的命令调至前台继续运行
+find / -name password &    #后台执行任务
+当要重新执行当前被挂起的任务时，通过bg %num 即可将挂起的job的状态由stopped改为running，仍在后台执行；当需要改为在前台执行时，执行命令fg %num即可；
+终止任务 kill %jobid
+
+
+来自: http://man.linuxde.net/bg
+脚本中调试信息
+set -x 开启 
+set +x关闭
+set -o errexit  遇到命令执行失败，将立即退出脚本
+
+set -u 或者 set -o nounset: 使用未初始化的变量时，让bash自动退出
+set -e 一但有任何一个语句返回非真的值，则退出bash; 但是可以通过捕获命令执行返回值
+command
+if [ "$?"-ne 0]; then echo "command failed"; exit 1; fi 
+或者
+command || { echo "command failed"; exit 1; } 
+或者
+if ! command; then echo "command failed"; exit 1; fi 
+
+bash默认返回管道中最后一个命令的值; 比如执行 false | true 将会被认为命令成功执行;如果你想让这样的命令被认为是执行失败，可以使用 set -o pipefail
+
+
+-e or -o errexit   当一个命令执行失败时，shell会立即退出
+-n or -o noexec    shell读取命令，但是不会执行它们。这个选项可以用来检查shell脚本是否存在语法错误
+-u or -o unset     当shell要扩展一个还未设置过值的变量时，shell必须输出信息到stderr，然后立即退出。但是交互式shell不应该退出。
+-x or -o xtrace	   对于每一条要执行的命令，shell在扩展了命令之后（参数扩展）、执行命令之前，输出trace到stderr。
+
+xargs, 可以使用-L来限定有多少个命令，也可以用-P来指定并行的进程数。如果你不知道你的命令会变成什么样，你可以使用xargs echo来看看会是什么样。当然， -I{} 也很好用。示例：
+find */ -name "contact_list" | xargs wc -l
+find . -name \*.py | xargs grep some_function
+cat hosts | xargs -I{} ssh root@{} hostname
+
+反斜杠用于长命令分割，命令行中也可以使用
+~ $ cd tmp/a/b/c || \
+> mkdir -p tmp/a/b/c && \
+> tar xvf -C tmp/a/b/c ~/archive.tar
+
+
+cd tmp/a/b/c || mkdir -p tmp/a/b/c      ##控制操作符|| 只有第一个命令失败才会执行第二个命令;同样的， && 只有第一个命令成功才会执行第二个命令
+
+
+vim显示乱码:		~/.vimrc
+set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+
+shell显示乱码：　~/.bashrc设置
+export LC_ALL=zh_CN.UTF-8
+export LANG=zh_CN.UTF-8
+
+tar czvf test.tar.gz *.c
+tar xzvf test.tar.gz -C tmp/tmp2/ 指定解压目录
+
+args，exec都是命令传递的过滤器，捕捉前面一个命令的结果，并将其传递到后一个命令。
+http://blog.csdn.net/jerry_1126/article/details/38678045
+
+TODO:!!!!!快速修改文件xargs
+gcc -Wall -g search_path.c -o search
+================SHELL====================
+ln -s srcFile LinkFile
+less file-----------less 工具也是对文件或其它输出进行分页显示的工具
+ps查看进程信息并通过less分页显示  ps -ef |less
+du -sh ----check file size
+
+grep -r "content" *         递归查找
+grep ".*<s>.*<s>.*<s>.*"    grep 正则匹配所有字符
+grep -a "**" binary_file 二进制文件中查找匹配字符串
+ 
+find . -name "wavlist"|xargs cat|grep -v ^$|wc -l   统计所有文件总行数
+
+diff -urNa d1 d2   比较两个目录的差异
+rm ./-C   文件名即为"-C"；如果是特殊字符可以考虑使用/去做转义
+统计单个文件行数
+grep -c "" filename
+
+du -sh file  ----check file size
+
+tail -n 10
+
+
+==================
+文件拷贝
+scp -P 5219  wj145@10.12.8.4:/home/alhome/wj145/midea_wash_160615_533.wav .       远程拷贝到本地
+目录拷贝
+scp -r /home/linux/soft/ root@www.mydomain.com:/home/linux/others/
+scp -r /home/linux/soft/ www.mydomain.com:/home/linux/others/
+上面 命令 将 本地 soft 目录 复制 到 远程 others 目录下，即复制后远程服务器上会有/home/linux/others/soft/ 目录
+==================
+字符串包含
+[[ $line =~ ".lab" ]] && echo "yes " $line
+
+
+================VIM====================
+vim 中文设置
+set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
+set fileencoding=utf-8
+set encoding=utf-8
+
+后一个单词词首 w
+后一个单词词尾 e
+前一个单词词首b
+
+x        删除当前光标下的字符
+dw       删除光标之后的单词剩余部分。
+d$       删除光标之后的该行剩余部分。
+dd       删除当前行。
+D		 删除当前位置到行末的内容
+
+grep -r "content" dir
+
+$((count + step))
+vim 批量替换：
+1,$ s/src_str/new_str/g 批量替换
+
+basename /aifs/users/wj145 -> wj145
+
+vim -o file1 file2 file3　同时显示多个文件
+
+:open file
+
+:split
+:vsplit
+同时显示多个文件
+
+:nohl  取消高亮显示（vi搜索后取消高亮）
+
+清除断点：
+delete (d)
+
+
+Vim批量注释
+ctrl+v 进入列编辑模式,向下或向上移动光标,把需要注释的行的开头标记起来,然后按大写的I(shift+i),再插入注释符,比如"//",再按Esc,就会全部注释了
+批量去掉注释
+ctrl+v,进入列编辑模式,横向选中列的个数(如"//"注释符号,需要选中两列),然后按d, 就会删除注释符号
+
+命令模式下，shift + #   查找光标所在单词
+
+vim  myfile  +100                             //打开的同时光标停在第100行行首
+vim config.mk  +/export             //打开的同时光标停在第一个export所在的位置(词首)
+
+查看前20行：
+    hg log | head -20
+查看后20行：
+    hg log | tail -20
+查看15行开始往下的20行
+    hg log | sed -n "15,+20p"
+---------------------------------------
+从第3000行开始，显示1000行。即显示3000~3999行
+cat filename | tail -n +3000 | head -n 1000
+【二】显示1000行到3000行
+cat filename| head -n 3000 | tail -n +1000
+分解：
+    tail -n 1000：显示最后1000行
+    tail -n +1000：从1000行开始显示，显示1000行以后的
+    head -n 1000：显示前面1000行
+
+sed '1!G;h;$!d' filename 文本倒序
+tac file
+
+字符串长度
+name=Alex
+echo ${#name}
+
+统计file1中没有　file2中存在的行
+grep -vwf file1 file2
+
+
+SLG太小的问题
+
+
+gdb:
+finish 跳出函数
+
+p   /x var     以16进制显示var的值
+x 16进制     d 10进制    t   二进制       c   按字符格式显示变量        f    按浮点数
+print *a@10         //如果a是一个数组，这样显示数据的10个元素的值
+print   var=10       //修改运行时变量的值
+whatis  var          //显示一个变量的类型
+ptype var           //更详细的方式显示变量var的类型，会打印出var的结构定义
+
+for i in `ps -ef | grep wj145| awk '{print $2}'`;do kill $i;done
+
+一个完整的awk语句为：Awk ‘[patten]{action}……’, 其中pattern缺省为1，action缺省为{print}。
+那么awk ‘1’完整的写法就是awk ‘1{print}’; 同理，awk ‘{print}’完整的写法也是awk ‘1{print}’。 
+文本格式的问题，cat -A file查看一下，如果是，dos2unix应该可以解决。
+
+RS：Record Separator，记录分隔符
+ORS：Output Record Separate，输出当前记录分隔符
+FS：Field Separator，字段分隔符
+OFS：Out of Field Separator，输出字段分隔符
+PS：RS、ORS、FS、OFS的英文解释绝不是这样的，这里只是解释清楚。建议去阅读awk的英文读物，其中解释了缩写的含义。
+
+
+
+注：书写错误也有可能哦
+
+ctrl+c和ctrl+z都是中断命令,但是他们的作用却不一样.
+ctrl+c是强制中断程序的执行,
+而ctrl+z的是将任务中断,但是此任务并没有结束,他仍然在进程中他只是维持挂起的状态,用户可以使用fg/bg操作继续前台或后台的任务,fg命令重新启动前台被中断的任务,bg命令把被中断的任务放在后台执行.
+例如:
+当你vi一个文件是,如果需要用shell执行别的操作,但是你又不打算关闭vi,因为你得
+存盘推出,你可以简单的按下ctrl+z,shell会将vi进程挂起~,当你结束了那个shell操作之后,你可以用fg命令继续vi你的文件.
+
+
+ctrl + u　删除一行
+	tips
+=================
+sort -n  the column is digit
+sort -r  sort reverse, from big to small
+sort -k  certain column 
+sort -t 指定分隔符
+uniq, -u(uniq)只输出uniq内容； -d(duplicate)只输出重复的内容
+cat a b | sort | uniq > c   # c is a union b 并集
+cat a b | sort | uniq -d > c   # c is a intersect b 交集
+cat a b b | sort | uniq -u > c   # c is set difference a - b 差集
+=======paste==========
+paste命令用于合并文件的列, 把每个文件以列对列的方式，一列列地加以合并
+-s or --serial,    原列变为行
+-d   用指定的间隔字符取代间隔符
+========join=========
+类似于db中的join操作：
+file1:
+1 1
+2 2
+3 3
+
+file 2:
+2 22
+3 33
+4 44
+
+无参数．默认只输出匹配的行
+join a b
+-------
+2 2 22
+3 3 33
+
+-a1表示 显示第一个文件中不匹配的行，即为left join
+join -a1 a b
+-------
+1 1
+2 2 22
+3 3 33
+
+-a2 表示 显示第二个文件中不匹配的行，即为right join
+join -a2 a b
+-------
+2 2 22
+3 3 33
+4 44
+
+-t "|" 是分隔符参数， 表示指定|作为域分隔符
+-------
+-o，按照指定的格式来显示结果
+-a, 除了显示原来的输出内容之外，还显示指令文件中没有相同栏位的行
+
+join -o 1.2 2.2 a b
+显示第一个文件第二列和第二个文件第二列
+2 22
+3 33
+
+-i  忽略大小写
+
+======cut===========
+cut 命令可以从一个文本文件或者文本流中提取文本列。 
+-d  ：后面接分隔字符。与 -f 一起使用；
+-f  ：依据 -d 的分隔字符将一段信息分割成为数段，用 -f 取出第几段的意思；
+-c  ：以字符 (characters) 的单位取出固定字符区间；
+-b  : 字节（bytes）
+
+echo $PATH | cut -d ':' -f 5                找出第五个
+echo $PATH | cut -d ':' -f 3,5				找出第三和第五个路径
+echo $PATH | cut -d ':' -f 3-				找出第三到最后一个路径
+echo $PATH | cut -d ':' -f 1-3				找出第一到第三个
+echo $PATH | cut -d ':' -f 1-3,5			找出第一到第三，还有第五个路径
+
+who|cut -b 8,3-5     按照字符取值
+
+可以在cut前使用join
+
+======shuf===========
+属于coreutils 包，如果系统没有此命令，yum install coreutils
+它也能够接受标准输入，即管道
+-n 最多显示多少行
+-o 将随机排序后的输出写到一个文件中
+sort -R 也可以随机排序，效率略低
+
+shuf -n2 file  随机选择两行随机排序
+
+======　sed ===========
+sed -i '4a\abc' file 在第四行后添加abc
+
+sed -n “3p” filename #输出文件的第3行
+sed -n “2,5p“ filename #输出文件的第2到5行
+sed ”/abc/d“ filename #删除包含“abc”的行
+sed “2d” filename #删除第2行
+sed ”$d“ filename #删除最后一行
+
+
+
+
+
+
+
+
+
+
+
+
+我们知道，在bash命令行下，Tab键是用来做目录文件自动完成的事的。但是如果你想输入一个Tab字符（比如：你想在sort -t选项后输入<tab>字符），你可以先按Ctrl-V，然后再按Tab键，就可以输入<tab>字符了。当然，你也可以使用$’\t’。
+hd命令（在CentOS下是hexdump命令）查看二进制文件, 如果你想编译二进制文件, 使用bvi命令
+对于文本文件转码，你可以试一下 iconv。或是试试更强的 uconv 命令（这个命令支持更高级的Unicode编码）
+如果你要分隔一个大文件，你可以使用split命令（split by size）和csplit命令（split by a pattern）。
+
+
+
+
+
+
+http://coolshell.cn/articles/7829.html
+
+
+
+
+nm 显示符号表  nm egram | grep wtk_egram
+000000000040cdef T wtk_egram_get_outsym2
+000000000040cf9f T wtk_egram_get_outsym3
+000000000040ceee T wtk_egram_get_outsym3_node
+000000000040cd2e T wtk_egram_get_outsym_txt
+
+对于每一个符号，nm列出其值(the symbol value)，类型（the symbol type）和其名字(the symbol name)
+addr2line -e egram 000000000040ca03 -f
+
+ldd 
+ldconfig 为了让动态链接库为系统所共享,还需运行动态链接库的管理命令
+objdump  查看目标文件或者可执行的目标文件的构成的gcc工具。
+
+
+
+
+egram，识别slot名称，并编译
+rbin格式 slot fst加载
+
+在进行大文件排序时，最好对大文件进行分解，分解成N个小文件(多小呢？看机器性能，在我们的生产环境——8CPU、32G Mem，我测试的是，80M一个文件的排序是最适当的)，
+排序完成后，再对小文件进行合并，这样会快好多，而对单个大文件的排序，sort效率很差。
+另外，文件太大，sort会使用部分很大的临时文件，一般在/tmp下，如果/tmp空间不足，可以使用 -T 来指定一个临时文件的存放目录
+
+
+0 = stdin
+1 = stdout
+2 = stderr 
+command >/dev/null的作用是将是command命令的标准输出丢弃，而标准错误输出还是在屏幕上。 
+一般来讲标准输出和标准错误输出都是屏幕，因此错误信息还是会在屏幕上输出。
+这时可以用command >/dev/null 2>&1 这样标准输出与标准错误输出都会被丢弃。1表示标准输出，2表示标准错误输出，2>&1表示将标准错误输出重定向到标准输出。
+https://www.cnblogs.com/paul8339/p/6518160.html
+
+
+
+
+集群：
+qdel -u wj145
+qdel -j  ID
+qstat
+qsub
+

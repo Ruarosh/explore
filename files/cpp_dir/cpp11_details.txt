@@ -296,3 +296,32 @@ future_status有三种状态：
 
 C++中有几种可调用对象：函数，函数指针，lambda表达式，bind创建的对象，以及重载了函数调用符的类。
 https://www.cnblogs.com/Philip-Tell-Truth/p/5814213.html
+
+《深度探索C++对象模型（Inside The C++ Object Model ）》学习笔记
+https://dsqiu.iteye.com/blog/1669614
+
+C++中的虚拟继承的一些总结 virtual  (多继承下为了省空间引入的策略，避免生成多个虚基类中的成员变量)
+https://www.cnblogs.com/BeyondAnyTime/archive/2012/06/05/2537451.html
+
+C++中virtual的用法（虚成员函数，重载； 虚析构函数，多态释放； 虚继承，用于多继承）
+https://blog.csdn.net/jirryzhang/article/details/79392934
+
+关于构造函数不能为virtual的原理
+https://blog.csdn.net/luoxue720/article/details/75093855
+* 虚函数的调用通过虚函数表vtable来调用，虚函数表是存储在内存空间的，在调用构造函数前，对象还未被实力化，也就没有该对象的内存空间，也无法找到虚函数表；
+* 虚函数表实在对象构造之后才建立的，所以构造函数不可能是函数。
+
+C++之善用PIMPL技巧   (减少编译依赖)
+http://www.voidcn.com/article/p-fhkgzwwu-bqy.html
+
+
+
+
+
+
+
+
+
+
+
+

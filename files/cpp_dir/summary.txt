@@ -164,3 +164,34 @@ https://blog.csdn.net/gochenguowei/article/details/79682681
 
 CPU问题分析
 https://blog.csdn.net/u013870094/article/details/78506596
+
+类型转化   static_cast、dynamic_cast、const_cast、reinterpret_cast
+https://www.cnblogs.com/luntai/p/5879026.html
+
+== const_cast ==
+void InputInt(int * num);
+const int constant = 21;
+InputInt(const_cast<int*>(&constant));
+
+== static_cast ==
+static_cast可以把任何类型的表达式转换成void类型。
+static_cast把任何类型的表达式转换成void类型。
+另外，与const_cast相比，static_cast不能把换掉变量的const属性，也包括volitale或者__unaligned属性。
+
+== dynamic_cast ==   使用dynamic_cast转换的Base类至少带有一个虚函数
+Base * base = new Base;
+Derived *der1 = dynamic_cast<Derived*>(base)
+会做运行时检查
+
+== reinterpret_cast ==
+通常为操作数的位模式提供较低层的重新解释
+允许将任何指针转换为任何其他指针类型。也允许将任何整数类型转换为任何指针类型以及反向转换。
+
+unsigned short Hash( void *p ) {
+  unsigned int val = reinterpret_cast<unsigned int>( p );
+  return ( unsigned short )( val ^ (val >> 16));
+}
+
+C++ 多态的实现及原理
+https://www.cnblogs.com/cxq0017/p/6074247.html
+https://blog.csdn.net/skysongkran/article/details/82012698
