@@ -1,0 +1,5 @@
+/home/david/dir/explore/code/wtk/ObserverModel/CMakeFiles/rebuild_cache.dir
+/home/david/dir/explore/code/wtk/ObserverModel/CMakeFiles/edit_cache.dir
+/home/david/dir/explore/code/wtk/ObserverModel/src/CMakeFiles/rebuild_cache.dir
+/home/david/dir/explore/code/wtk/ObserverModel/src/CMakeFiles/edit_cache.dir
+/home/david/dir/explore/code/wtk/ObserverModel/src/CMakeFiles/test.dir

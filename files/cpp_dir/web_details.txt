@@ -74,7 +74,9 @@ http://www.cnblogs.com/haippy/p/3412858.html
 * Cache Conherence （缓存一致性）
 * 
 
-
+观察者模式 & 发布/订阅模式
+https://blog.csdn.net/qq_34199383/article/details/80416021
+https://www.cnblogs.com/lovesong/p/5272752.html
 
 
 

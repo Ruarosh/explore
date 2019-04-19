@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -std=gnu++0x   CMakeFiles/test.dir/main.cc.o  -o test 

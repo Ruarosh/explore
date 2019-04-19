@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/david/dir/explore/code/wtk/ObserverModel/Include/ConcreteObserver.h
+Observer.h
+/home/david/dir/explore/code/wtk/ObserverModel/Include/Observer.h
+string
+-
+
+/home/david/dir/explore/code/wtk/ObserverModel/Include/ConcreteSubject.h
+Subject.h
+/home/david/dir/explore/code/wtk/ObserverModel/Include/Subject.h
+Observer.h
+/home/david/dir/explore/code/wtk/ObserverModel/Include/Observer.h
+list
+-
+string
+-
+memory
+-
+
+/home/david/dir/explore/code/wtk/ObserverModel/Include/Subject.h
+Observer.h
+/home/david/dir/explore/code/wtk/ObserverModel/Include/Observer.h
+
+/home/david/dir/explore/code/wtk/ObserverModel/src/main.cc
+iostream
+-
+../Include/ConcreteObserver.h
+/home/david/dir/explore/code/wtk/ObserverModel/Include/ConcreteObserver.h
+../Include/ConcreteSubject.h
+/home/david/dir/explore/code/wtk/ObserverModel/Include/ConcreteSubject.h
+
