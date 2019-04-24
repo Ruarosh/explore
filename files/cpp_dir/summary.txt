@@ -3,6 +3,8 @@ cpp官网 http://www.cplusplus.com/
 顺序容器包括vector、deque、list、forward_list、array、string，所有顺序容器都提供了快速顺序访问元素的能力。
 关联容器中的元素是按关键字来保存和访问的。与之相对，顺序容器中的元素是按它们在容器中的位置来顺序保存和访问的。关联容器也是模板。
 
+std::enable_shared_from_this
+https://blog.csdn.net/caoshangpa/article/details/79392878
 
 std::set 自定义() < 的重载函
 https://www.cnblogs.com/litaozijin/p/6665595.html
@@ -195,3 +197,6 @@ unsigned short Hash( void *p ) {
 C++ 多态的实现及原理
 https://www.cnblogs.com/cxq0017/p/6074247.html
 https://blog.csdn.net/skysongkran/article/details/82012698
+
+《编写高质量代码：改善C++程序的150个建议》读书笔记(1)
+http://insaneguy.me/2014/05/22/150_tips_on_writing_high_quality_cpp_codes_1/
