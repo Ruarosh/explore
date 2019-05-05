@@ -1,3 +1,10 @@
+https://blog.csdn.net/drbinzhao/article/details/54999234  复制多行
+
+find . -regex ".*/.*\.\(cpp\|c\|\hpp\|h)"
+
+vim中，光标跳转位置
+ctrl+i，ctrl+o跳转位置
+
 shell脚本转二进制文件
 shc -T -f
 
