@@ -1,0 +1,424 @@
+==============std code====================
+std::all_of, std::any_of, std::none_of
+all_of:检查区间[first, last)中是否所有的元素都满足一元判断式p，所有的元素都满足条件返回true，否则返回false。
+any_of：检查区间[first, last)中是否至少有一个元素都满足一元判断式p，只要有一个元素满足条件就返回true，否则返回true。
+none_of：检查区间[first, last)中是否所有的元素都不满足一元判断式p，所有的元素都不满足条件返回true，否则返回false。
+
+恒润
+.ci/package.py deploy --version=1.4.5 --platform=s32v --project=sv51 --model_path=/home/juwei/Documents/wj_works/code/dms-wrapper/thirdparty/resource/dms-model-release/sv51_1_4_2_newori_model_release.tar --encrypt_model
+
+root@s32v234evb:/dms_test/libs/dms-wrapper-release/sample/bin# ./sample_sd_abnormal_capture /dms_test/models/sv51_1_4_2_newori_model_release.tar
+
+
+adapter/aptiv/CMakeLists.txt
+
+  if(CMAKE_SYSTEM_PROCESSOR  STREQUAL "armv7l")
+      add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/driver/aptiv_j6_q0144)
+      add_executable (camera_get_faceid_liveness_0144 test/camera_get_faceid_liveness_0144.cpp)
+      target_link_libraries(camera_get_faceid_liveness_0144  dms_wrapper_testtools dms_wrapper ${PROJECT_NAME} aptiv_j6_q0144)
+  endif()
+  
+  install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
+      DESTINATION include
+      FILES_MATCHING PATTERN "*.h"
+  )
+  install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+  install(TARGETS get_faceid_features get_faceid_features_image  get_faceid_liveness get_faceid_features_non_liveness DESTINATION bin)
+
+  if(CMAKE_SYSTEM_PROCESSOR  STREQUAL "armv7l")
+      install(TARGETS camera_get_faceid_liveness_0144 DESTINATION bin)
+  endif()
+
+valgrind 参数+保存日志命令
+https://blog.csdn.net/erlang_hell/article/details/51360149
+valgrind --log-file=./valgrind_report.log --leak-check=full --show-leak-kinds=all --show-reachable=no --track-origins=yes ./
+./package.py deploy --version=0.0.1 --platform=s32v --project=sv51 --encrypt_model --model_path=/dms_test/models/sv51_1_4_2_newori_model_release.tar
+
+== 工程编译 ==
+git submodule update --init --recursive --remote
+.ci/package.py deploy --version=major.minor.fix --platform=[s32v, x64, tda2...] --project=[sv51, aptiv, nxp...]
+
+s32v + sv51/nxp   ok  (sv51 上汽)    (S32V 是NXP推出的汽车视觉微处理器具有强大的运算处理能力)
+x64 + aptiv   ok
+tda2 + aptiv   ok
+
+== dms主要模块和相应功能，逻辑 ==
+已有工具
+sample_sd_abnormal_capture
+
+DetectionBasedTracker
+FaceAccuracyEvaluator
+face_detection
+faceid 
+
+camera_get_faceid_features.cpp
+main_video
+	dms_helper.extract_face_features(frame);
+--------------------------------------
+    if (detection_task_->on_running_once()) {
+      if (quality_task_->on_running_once()) {    //fail safe
+        if (track_task_->on_running_once()) {
+          liveness_task_->on_running_once();
+        }
+      }
+    }
+--------------------------------------
+      if (result.safe_fail.type == SDK_DMS_SAFE_FAIL_INVALID_HEAD_POSITION) {
+          draw_fail_safe(image_with_time.gray_image, "position fail safe");
+      } else if (result.safe_fail.type == SDK_DMS_SAFE_FAIL_INVALID_HEADPOSE) {
+        draw_fail_safe(image_with_time.gray_image, "headpose fail safe");
+      } else if (result.safe_fail.type == SDK_DMS_SAFE_FAIL_NO_FACE) {
+        draw_fail_safe(image_with_time.gray_image, "face fail safe");
+      }
+
+--------------------------------------
+faceid.cpp: TEST
+	for (auto pair : face_id_sets)
+	*1) DMSHelper::extract_face_features
+		momenta_faceid.cpp:   fid_feature_extract
+			FaceIdHandleImpl::extract_face_features
+				FaceIdHandleImpl::    run_one_frame
+					on_running_once ...
+				FaceIdHandleImpl::    blob = extract_face_feature(face);
+
+	*2) face_compare
+		extract_face_features
+
+TEST
+	DMSHelper::img_compare
+		fid_img_compare
+
+
+--------------------------------------
+sdk:
+**************************
+adapter/aptiv/include$ vim momenta_faceidadapter/tuling/include.h
+
+fid_status_t sd_hdl_init(sd_handle_t* handle, const char* model_path);
+
+fid_status_t sd_hdl_destroy(sd_handle_t handle);
+
+fid_status_t  fid_img_compare(sd_handle_t handle, sd_image_t image1, sd_image_t image2);
+
+fid_status_t  fid_feature_compare(sd_handle_t handle, fid_feature_t feature1, fid_feature_t feature2);
+
+fid_status_t  fid_feature_compare_dist(sd_handle_t handle, fid_feature_t feature1, fid_feature_t feature2, float* odist);
+
+fid_status_t  fid_feature_extract(sd_handle_t handle, sd_image_t image, fid_feature_t* feature);
+
+fid_status_t fid_feature_free(sd_handle_t handle, fid_feature_t feature);
+
+fid_status_t  fid_config_get(sd_handle_t handle, fid_config_t* threshold);
+
+fid_status_t fid_config_set(sd_handle_t handle, fid_config_t threshold);
+
+fid_status_t fid_get_version(const char **version, const char **extra);
+
+**************************
+adapter/tuling/include    sd_abnormal.h  sd_common.h
+--------------------------------------
+main_run
+	// producer thread
+	video_reader.read(bgr_img)  <produce image, push to queue>
+
+	// consumer thread <pop image>
+		predict_and_draw
+--------------------------------------
+using FaceResource = FlowResource<FaceInfo>;
+--------------------------------------
+FaceHandleImpl 类中:   <face_handle.cpp>
+OriDriverImpl -> FaceOrientationDriver
+	predict
+		pre-process (transform -> rotate) --> net_->run()即 minfer_net_->run() --> process_output;
+		...
+其他块操作雷同，参考FaceHandleImpl::FaceHandleImpl和参考FaceHandleImpl::predict
+#include "perception/face/align_driver.h"
+class AlignDriverImpl final : public perception::FaceAlignDriver ==>  class FaceAlignDriver : public Driver
+
+#include "perception/face/classification_driver.h"
+class ActionDriverImpl final : public FaceClassificationDriver   ==>  class FaceClassificationDriver : public Driver
+
+#include "perception/face/liveness_driver.h"
+class LivenessDriverImpl final : public FaceLivenessDriver  ==> class FaceLivenessDriver : public Driver
+
+#include "perception/face/combined_detector.h"
+none  ==> class FaceCombinedDetector
+
+#include "perception/face/detector_driver.h"
+class DetDriverImpl final : public FaceDetectorDriver  ==> class FaceDetectorDriver : public Driver
+
+#include "perception/face/face_handle.h"
+struct MtpFaceHandle : public perception::FaceHandle  ==> class FaceHandle : public Handle   ?? struct 继承 class
+
+#include "perception/face/feature_driver.h"
+class FeatDriverImpl final : public FaceFeatureDriver  ==> class FaceFeatureDriver : public Driver
+
+#include "perception/face/gaze_driver.h"
+class GazeDriverImpl final : public FaceGazeDriver  ==> class FaceGazeDriver : public Driver
+
+#include "perception/face/orientation_driver.h"
+class OriDriver3DMMImpl final : public FaceOrientationDriver
+class OriDriverImpl final : public FaceOrientationDriver
+	==> class FaceOrientationDriver : public Driver
+
+#include "perception/face/quality_driver.h"
+class QualityDriverImpl final : public perception::FaceQualityDriver  ==> class FaceQualityDriver : public Driver
+
+=======================================================
+src/common/src/image.cpp:class ImageImpl final : public Image {
+thirdparty/dms-core/src/face/src/align_impl.hpp:class AlignDriverImpl final : public perception::FaceAlignDriver {
+thirdparty/dms-core/src/face/src/det_impl.hpp:class DetDriverImpl final : public FaceDetectorDriver {
+thirdparty/dms-core/src/face/src/orientation_3dmm_impl.hpp:class OriDriver3DMMImpl final : public FaceOrientationDriver {
+thirdparty/dms-core/src/face/src/align_keypoints_impl.hpp:class AlignKeypointsDriverImpl final : public perception::FaceAlignDriver {
+thirdparty/dms-core/src/face/src/position_impl.hpp:class PositionDriverImpl final : public FacePositionDriver {
+thirdparty/dms-core/src/face/src/action_impl.hpp:class ActionDriverImpl final : public FaceClassificationDriver {
+thirdparty/dms-core/src/face/src/gaze_impl.hpp:class GazeDriverImpl final : public FaceGazeDriver {
+thirdparty/dms-core/src/face/src/liveness_impl.hpp:class LivenessDriverImpl final : public FaceLivenessDriver {
+thirdparty/dms-core/src/face/src/orientation_impl.hpp:class OriDriverImpl final : public FaceOrientationDriver {
+thirdparty/dms-core/src/face/src/action_feature_impl.hpp:class ActionFeatureDriverImpl final : public FaceActionFeatureDriver {
+thirdparty/dms-core/src/face/src/face_handle.cpp:class FaceHandleImpl final : public MtpFaceHandle {
+thirdparty/dms-core/src/face/src/action_cls_imp.hpp:class ActionClsDriverImpl final : public FaceActionClsDriver {
+thirdparty/dms-core/src/face/src/feat_impl.hpp:class FeatDriv
+erImpl final : public FaceFeatureDriver {
+thirdparty/dms-core/src/face/src/align_multi_impl.hpp:class AlignMultiDriverImpl final : public perception::FaceAlignDriver {
+thirdparty/dms-core/src/face/src/quality_impl.hpp:class QualityDriverImpl final : public perception::FaceQualityDriver {
+thirdparty/dms-core/src/common/src/image.cpp:class ImageImpl final : public MtpImage {
+Handle.cpp (src\dms\src):class DMSHandleS32VImpl : public DMSHandle {
+Track.hpp (src\dms\src\model_task):class TrackTask : public FlowTask
++
+thirdparty/dms-core/src/common/src/model_loader.cpp:class FileLoaderImpl final : public FileLoader {
+thirdparty/dms-core/src/common/src/model_loader.cpp:class ModelLoaderImpl final : public ModelLoader {
+thirdparty/dms-core/src/common/src/net_loader.cpp:class SerializedNetLoaderImpl final : public SerializedNetLoader {
+thirdparty/dms-core/src/common/src/net_loader.cpp:class NetLoaderImpl final : public NetLoader {
+thirdparty/dms-core/src/common/src/net.cpp:class NetImpl final : public Net {
+thirdparty/leveldb/util/posix_logger.h:class PosixLogger final : public Logger {
+
+--------------------------------------
+minfer_v2::Net 的实现 == none
+gtest框架
+
+--------------------------------------
+MTDMSFaceIdFeatureResult extract_face_features(FrameInfo frame, std::vector<float> &features)
+	extract_face_feature
+		MTP_face_detect_feature
+			...
+				predict_feature
+
+face 相关功能实现
+* facehandle
+	FaceHandleImpl
+		predict_liveness
+
+* key-point
+action
+orient
+ZZ
+livenessr
+faceidp
+detect
+tracke
+quality
+
+===========bugfix=============
+* LD_LIBRARY_PATH
+* std::shared_ptr<FILE> file(fopen(result_file.c_str(), "wb"),   [](FILE *file) { std::fclose(file); });
+* /usr/local/lib  /usr/lib
+* thirdparty/dms-core/thirdparty/opencv/CMakeLists.txt   add_subdirectory(system_runtime)
+* dms-wrapper/src/dms/src/model_task/classification.hpp   
+	auto ret = MTP_face_detect_classification(face_handle_.get(), images.data(), face_info.face.get(), batch_size, &mtp_faces, 
+		face_info.frame_info.timestamp_us); //remove last parameter
+
+================build===============
+~/Documents/wj_works/code/dms-wrapper/adapter/tuling/sample/normal/sample_sd_abnormal_simple
+模型目录：~/Documents/wj_works/code/dms-wrapper/thirdparty/resource/dms-model-release
+./package_tar.sh -t sv51_1_4_2_newori
+
+=======================================================
+
+
+MTP_face_detect_position
+	handle->predict_position(images, face_ptr);
+		position_->predict(images, face_rects);
+
+MTP_face_detect_quality
+	handle->predict_quality(images, face_ptr);
+		quality_->predict(images, input_faces);
+
+MTP_face_detect_gaze
+	handle->predict_gaze(images, face_ptr);
+
+MTP_face_detect_classification
+	handle->predict_action_cls_0(images, face_ptr, action_features, time);
+
+MTP_face_detect_liveness
+	handle->predict_liveness(images, face_ptr);
+
+MTP_face_detect_feature
+	handle->predict_feature(images, face_ptr);
+
+MTP_face_detect_orientation
+	handle->predict_orientation(images, face_ptr);
+
+=======================================================
+
+class DMSHandleS32VImpl
+	std::shared_ptr<DetectionTask> detection_task_;
+	std::shared_ptr<TrackTask> track_task_1;
+	std::shared_ptr<TrackTask> track_task_2;
+	std::shared_ptr<ClassificationTask> classification_task_1;
+	std::shared_ptr<ClassificationTask> classification_task_2;
+	std::shared_ptr<OrientationTask> orientation_task_;
+	std::shared_ptr<PositionTask> position_task_;
+	std::shared_ptr<FeatureTask> feature_task_;
+	std::shared_ptr<MonitorTask> monitor_task_;
+	std::shared_ptr<EventTask> event_task_;
+	std::shared_ptr<ActionTask> action_task_;
+	std::shared_ptr<FrameResource> frame_resource_;
+	std::shared_ptr<FaceResource::Receiver> result_receiver_;
+
+	FlowMachine machine_; // 构造DMSHandleS32VImpl时，所有task注册在这里，并run起来
+
+
+以class DetectionTask为例
+public:
+	DetectionTask()
+	on_init
+	on_running_once
+		auto deque = frame_receiver_->get_resource();
+		auto frame = fetch<FetchType::BACK_AND_CLEAR>(deque);
+		MTP_face_detect_rect
+			*result = handle->predict_rect(images);
+
+		detector_dispatcher_->signal_update(face_info);
+
+		monitor_callback_(monitor_result, user_data_);   // set callback result
+	on_finish
+private:
+  std::shared_ptr<FrameResource::Receiver> frame_receiver_;
+  std::shared_ptr<FaceResource> detector_dispatcher_;
+  std::shared_ptr<MtpFaceHandle> face_handle_;
+  ModelConfig model_config_;
+
+
+
+======================bins=============================
+├── calib_filter
+├── sample_feat
+├── sample_feed_image
+├── sample_hello_world
+├── sample_sd_abnormal_capture
+├── sample_sd_abnormal_simple
+├── sample_sd_get_version
+└── xinli
+    ├── sample_sd_abnormal_camera_to_screen_xinli
+    └── sample_video
+
+
+DMSHandleS32VImpl
+
+-------------------------------------------------------
+sample_feed_image.cpp
+	sd_abnormal_set_monitor_callback
+	sd_abnormal_set_warning_callback
+
+	for
+		sd_abnormal_feed_frame
+
+	sd_abnormal_destroy
+
+-------------------------------------------------------
+sample_sd_abnormal_capture.cpp
+producer<frames> + consumer<dms_helper.predict_and_draw>   adapter\tuling\sample目录下有三个 (normal nxp_q0144 xinli test)
+	sample::DMSHelper dms_helper(model_file);
+		sd_abnormal_feed_frame
+			dms_handle->feed_frame   <DMSHandleS32VImpl::feed_frame>
+				signal_update (notify_all) +  (wait_for)
+		draw <fail safe, others ...>		
+
+
+-------------------------------------------------------
+sample_sd_abnormal_simple.cpp              <model_path image_path [database_path]>   to check face [in database]
+	sd_abnormal_feed_frame
+		dms_handle->feed_frame
+
+ps:
+struct MonitorResult {
+  FrameInfo frame_info;
+  Face face;
+};
+
+-------------------------------------------------------
+sample_sd_abnormal_camera_to_screen_xinli.cpp
+	类似sample_sd_abnormal_capture的producer + consumer
+	
+-------------------------------------------------------
+sample_video.cpp
+	类似sample_sd_abnormal_capture的producer + consumer
+
+
+frame_resource_->signal_update(frame_info);
+
+===================base class========================
+flowchart.h
+
+SubscriberContainer entry     entry.notifier->data.cv.notify_all();
+
+  struct SubscriberContainer {
+    int max_count;
+    std::shared_ptr<MutexObject<ConditionVariableWithFlag>> notifier;
+    std::shared_ptr<MutexObject<std::deque<T>>> deque;
+    int group_id;
+  };
+
+struct ConditionVariableWithFlag {
+  bool has_unresolve_signal_flag;
+  std::condition_variable cv;
+};
+
+class FlowMachine
+	run (在restart中也有wait_for)
+		bool is_success = task->on_running_once(); //也就是各个task中的on_running_once
+		wait_for
+
+track_dispatcher_->signal_update
+obtain_receiver
+
+==================pipeline=======================
+FaceHandleImpl中的predict依次遍历所有function
+std::unique_ptr<DMSHandle>
+DMSHandle::make(const DMSHandle::Settings &settings) {
+  //return std::make_unique<DMSHandleS32VImpl>(settings);
+  return std::make_unique<DMSHandleA15Impl>(settings);
+}
+
+handle.cpp中
+namespace momenta {
+DMSHandleA15Impl
+DMSHandleS32VImpl
+}
+
+DMSHandleA15Impl 的构造函数中初始化所有的监听task
+//  orientation_task_监听position的返回结果
+    orientation_task_ = std::make_shared<OrientationTask>(
+        ModelConfig{
+            .model_path = settings.model_path,
+            .handle_config = Constants::get().config_orientation,
+            .device_type = Constants::get().device_type_orientation,
+            .device_id = Constants::get().device_id_orientation,
+        },
+        face_handle,
+        orientation_resource,
+        position_resource->obtain_receiver(MAX_RECEIVER_BUFFER_SIZE));
+
+=================序列化脚本=====================
+.ci/model_process.py process --model_path=/home/juwei/Documents/wj_works/code/dms-wrapper/thirdparty/resource/dms-model-release/new_dms_models/aptiv_face_id_float_after_shrink_exp_big/model/face.align.v1.190225 --platform=armv7l --ssh_user=root --ssh_host=10.8.144.70
+
+.ci/model_pack.py pack --config_path=/home/juwei/Documents/wj_works/code/dms-wrapper/thirdparty/resource/dms-model-release/new_dms_models/aptiv_face_id_float_after_shrink_exp_big/config --model_path=/home/juwei/Documents/wj_works/code/dms-wrapper/thirdparty/resource/dms-model-release/new_dms_models/aptiv_face_id_float_after_shrink_exp_big/model --platform=armv7l --output_path=/home/juwei/Documents/tmp --compress --select_srlz --encrypt 
+
+============================ api for adapters in dms-wrapper ===============================
+momenta_dms.h    :    api for saic	 dms_handle_init
+momenta_faceid.h :    api for aptiv      sd_hdl_init
+sd_abnormal.h    :    api for tuling     sd_abnormal_init
+
+
+
