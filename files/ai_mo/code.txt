@@ -1,3 +1,69 @@
+==================================
+== return result type
+struct MonitorResult {
+  FrameInfo frame_info;
+  Face face;
+};
+
+int config = SDK_DMS_CONFIG_FORCE_SYNC;
+
+
+typedef struct {
+  struct timeval      time;                                ///< timestamp of event frame
+  int                 cls_score_count;                     ///< size of action score entries
+  float               cls_score[DMS_MAX_CLS_SCORE_COUNT];  ///< action scores
+  bool                rect_valid;                          ///< validity of the head rect
+  dms_rect_t          rect;                                ///< position of hte head rect
+  int                 keypoints_count;                     ///< number of keypoints
+  dms_point2f_t       keypoints[DMS_MAX_KEYPOINTS_COUNT];  ///< key points
+  bool                pose_valid;                          ///< validity of headpose, given valid head rect
+  float               pitch;                               ///< pitch of head position, in radius
+  float               yaw;                                 ///< yaw of head position, in radius
+  float               roll;                                ///< roll of head position, in radius
+
+  dms_face_quality_t  face_quality;                        ///< reason of fail-safe, if any
+  dms_orientation2f_t gaze_head;                           ///< orientation(pitch,yaw) of head(nose)
+  dms_orientation2f_t gaze_left_eye;                       ///< orientation(pitch,yaw) of left eye
+  dms_orientation2f_t gaze_right_eye;                      ///< orientation(pitch,yaw) of right eye
+  dms_vector3f_t      vector_head;                         ///< direction vector of head(nose)
+  dms_vector3f_t      vector_left_eye;                     ///< direction vector of left eye
+  dms_vector3f_t      vector_right_eye;                    ///< direction vector of right eye
+  dms_point3f_t       position;                            ///< xyz coordinates of head
+  dms_point3f_t       position_head;                       ///< 3d position of head(nose)
+  dms_point3f_t       position_left_eye;                   ///< 3d position of left eye center
+  dms_point3f_t       position_right_eye;                  ///< 3d position of right eye center
+  float               distance_left_eye;                   ///< distance of left eye
+  float               distance_right_eye;                  ///< distance of right eye
+} dms_frame_result_t;
+
+class JsonValue {
+protected:
+    friend class Json;
+    friend class JsonInt;
+    friend class JsonDouble;
+    virtual Json::Type type() const = 0;
+    virtual bool equals(const JsonValue * other) const = 0;
+    virtual bool less(const JsonValue * other) const = 0;
+    virtual void dump(std::string &out) const = 0;
+    virtual double number_value() const;
+    virtual int int_value() const;
+    virtual bool bool_value() const;
+    virtual const std::string &string_value() const;
+    virtual const Json::array &array_items() const;
+    virtual const Json &operator[](size_t i) const;
+    virtual const Json::object &object_items() const;
+    virtual const Json &operator[](const std::string &key) const;
+    virtual ~JsonValue() {}
+};
+
+s32v+hiran
+tda2 + (aptiv/sv51)
+x64+...
+
+==================================
+SDK_DMS_CONFIG_ENABLE_IDENTIFY
+sudo ifconfig enp0s31f6 10.8.144.58 netmask 255.255.255.0
+
 ==============std code====================
 std::all_of, std::any_of, std::none_of
 all_of:检查区间[first, last)中是否所有的元素都满足一元判断式p，所有的元素都满足条件返回true，否则返回false。
@@ -44,6 +110,7 @@ tda2 + aptiv   ok
 
 == dms主要模块和相应功能，逻辑 ==
 已有工具
+
 sample_sd_abnormal_capture
 
 DetectionBasedTracker
@@ -416,9 +483,49 @@ DMSHandleA15Impl 的构造函数中初始化所有的监听task
 .ci/model_pack.py pack --config_path=/home/juwei/Documents/wj_works/code/dms-wrapper/thirdparty/resource/dms-model-release/new_dms_models/aptiv_face_id_float_after_shrink_exp_big/config --model_path=/home/juwei/Documents/wj_works/code/dms-wrapper/thirdparty/resource/dms-model-release/new_dms_models/aptiv_face_id_float_after_shrink_exp_big/model --platform=armv7l --output_path=/home/juwei/Documents/tmp --compress --select_srlz --encrypt 
 
 ============================ api for adapters in dms-wrapper ===============================
-momenta_dms.h    :    api for saic	 dms_handle_init
-momenta_faceid.h :    api for aptiv      sd_hdl_init
-sd_abnormal.h    :    api for tuling     sd_abnormal_init
+momenta_dms.h    :    api for saic	 
+	 dms_handle_init
+	 dms_handle_destroy
+	 dms_frame_feed
+	 dms_event_callback_set
+	 dms_cyclic_callback_set
+	 dms_feature_extract
+	 dms_feature_compare
+	 dms_version_get
+momenta_faceid.h :    api for aptiv      
+	 sd_hdl_init
+	 sd_hdl_destroy
+	 fid_img_compare
+	 fid_feature_compare
+	 fid_feature_compare_dist
+	 fid_feature_extract
+	 fid_feature_init_from_data
+	 fid_feature_free
+	 fid_config_get
+	 fid_config_set
+	 fid_get_version
+sd_abnormal.h    :    api for tuling     
+	 sd_abnormal_init
+	 sd_abnormal_set_camera
+	 sd_abnormal_feed_frame
+	 sd_abnormal_set_warning_callback
+	 sd_abnormal_set_monitor_callback
+	 sd_abnormal_destroy
+	 sd_abnormal_config
+	 sd_abnormal_face_identify_init_database
+	 sd_abnormal_face_record_request
+	 sd_abnormal_face_update_request
+	 sd_abnormal_face_identify_request
+	 sd_abnormal_database_delete_request
+	 sd_abnormal_database_recover_request
+	 sd_abnormal_database_qeury_request
+	 sd_abnormal_set_state_callback
+
+
+
+
+
+
 
 
 
