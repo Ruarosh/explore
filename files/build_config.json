@@ -1,0 +1,330 @@
+{
+    "cc": {
+        "gcc-linaro-5.3-2016.02-x86_64_arm-linux-gnueabihf": {
+            "name": "gcc-linaro-5.3-2016.02-x86_64_arm-linux-gnueabihf",
+            "path": "/opt/tda_linux/linaro/gcc-linaro-5.3-2016.02-x86_64_arm-linux-gnueabihf/bin",
+            "toolchain_prefix": "arm-linux-gnueabihf-",
+            "c_compiler": "gcc",
+            "cxx_compiler": "g++",
+            "ar": "ar",
+            "ranlib": "ranlib",
+            "strip": "strip"
+        },
+        "gcc-6.3.1-linaro-Xarmv8-linux": {
+            "name": "gcc-6.3.1-linaro-Xarmv8-linux",
+            "path": "/opt/s32v_1_2_0/compilers/gcc-6.3.1-linaro-Xarmv8-linux/i686-linux/bin",
+            "toolchain_prefix": "aarch64-linux-gnu-",
+            "c_compiler": "gcc",
+            "cxx_compiler": "g++",
+            "ar": "ar",
+            "ranlib": "ranlib",
+            "strip": "strip"
+        },
+        "clang-x86_64-7.0.1" : {
+            "name": "clang-x86_64-7.0.1",
+            "path": "/home/dms/work/test_android/bin",
+            "toolchain_prefix": "aarch64-linux-android-",
+            "c_compiler": "clang",
+            "cxx_compiler": "clang++",
+            "ar": "ar",
+            "ranlib": "ranlib",
+            "strip": "strip"
+        }
+    },
+    "opencv": {
+        "linux-armv7l-static-3.4.6": {
+            "name": "linux-armv7l-static-3.4.6",
+            "version": "3.4.6",
+            "build_type": "static"
+        },
+        "armv7l-tda2-opencv-static-withffmpeg-3.4.7" : {
+            "name": "armv7l-tda2-opencv-static-withffmpeg-3.4.7",
+            "version": "3.4.7",
+            "build_type": "static"
+        },
+        "Linux-armv7l-gcc5.4-static" : {
+            "name": "Linux-armv7l-gcc5.4-static",
+            "version": "3.4.6",
+            "build_type": "static"
+        },
+        "Linux-armv7l-gcc5.4" : {
+            "name": "Linux-armv7l-gcc5.4",
+            "version": "3.4.6",
+            "build_type": "dso"
+        },
+        "Linux-aarch64-gcc5.4" : {
+            "name": "Linux-aarch64-gcc5.4",
+            "version": "3.4.6",
+            "build_type": "dso"
+        }
+    },
+    "opencv-embedded": {
+        "Linux-armv7l-gcc5.4-3.4.7-mini-static" : {
+            "name": "Linux-armv7l-gcc5.4-3.4.7-mini-static",
+            "version": "3.4.7",
+            "build_type": "static"
+        },
+        "Linux-aarch64-gcc7.2-3.4.7-mini-static": {
+            "name": "Linux-aarch64-gcc7.2-3.4.7-mini-static",
+            "version": "3.4.7",
+            "build_type": "static"
+        },
+        "Linux-x64-gcc5.4-3.4.7-mini-static": {
+            "name": "Linux-x64-gcc5.4-3.4.7-mini-static",
+            "version": "3.4.7",
+            "build_type": "static"
+        },
+        "Linux-android-aarch67-clang701-mini-3.4.7-static" : {
+            "name": "Linux-android-aarch67-clang701-mini-3.4.7-static",
+            "version": "3.4.7",
+            "build_type": "static"
+        }
+    },
+    "hal": [
+        "tda2_linux_aptiv_q0144",
+        "nxp_s32v_qt0144"
+    ],
+    "minfer": [
+        "armv7-linux-gcc7.2-static"
+    ],
+    "platform": {
+        "tda2": {
+            "name": "tda2",
+            "sysroot": "/opt/tda_linux/targetfs",
+            "npu": "nil",
+            "instance" : [
+                {
+                    "ip":"10.8.144.70",
+                    "host": "root",
+                    "pwd":""
+                }
+            ]
+        },
+        "s32v": {
+            "name": "s32v",
+            "sysroot": "/opt/fsl-auto/2.4.1/sysroots/aarch64-fsl-linux",
+            "npu": "airunner",
+            "instance" : [
+                {
+                    "ip":"10.8.144.108",
+                    "host": "root",
+                    "pwd":""
+                }
+            ]
+        },
+        "cv22": {
+            "name": "cv22",
+            "sysroot": "/opt/fsl-auto/2.4.1/sysroots/aarch64-fsl-linux",
+            "npu": "nil"
+        },
+        "mtk8665": {
+            "name": "mtk8665",
+            "sysroot": "/home/dms/work/test_android/sysroot",
+            "npu": "nil",
+            "gpu": "opencl",
+            "android-api": 21
+        },
+        "x86_64": {
+            "name": "x86_64",
+            "sysroot": "",
+            "npu": "nil",
+            "gpu": "nil"
+        }
+    },
+    "project": {
+        "sv51": [
+            {
+                "name":"sv51",
+                "cc": "gcc-6.3.1-linaro-Xarmv8-linux",
+                "arch": "aarch64",
+                "os": "Linux",
+                "platform": "s32v",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-aarch64-gcc7.2-3.4.7-mini-static",
+                "hal": "hiran_s32v_0135",
+                "minfer": "aarch64-linux-gcc7.2-airunner-static",
+                "model": "sv51_1_5_1.json",
+                "build_cmd" : {"no_header_gen" : true} 
+            }
+        ],
+        "aptiv_fid": [
+            {
+                "name":"aptiv_fid",
+                "cc": "gcc-linaro-5.3-2016.02-x86_64_arm-linux-gnueabihf",
+                "arch": "armv7l",
+                "os": "Linux",
+                "platform": "tda2",
+                "opencv": "armv7l-tda2-opencv-static-withffmpeg-3.4.7",
+                "opencv-embedded": "Linux-armv7l-gcc5.4-3.4.7-mini-static",
+                "hal": "tda2_linux_aptiv_q0144",
+                "minfer": "armv7-linux-gcc7.2-static",
+                "minfer_git_sha": "6361955492e1",
+                "build_cmd" : {"no_header_gen" : true},
+                "model": "aptiv_face_id.json"
+            },
+            {
+                "name":"aptiv_fid",
+                "arch": "x86_64",
+                "os": "Linux",
+                "platform": "x86_64",
+                "cc": "nil",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-x64-gcc5.4-3.4.7-mini-static",
+                "hal": "x86_64",
+                "minfer": "x86_64-linux-gcc5.4",
+                "build_cmd" : {"no_header_gen" : true},
+                "model": "aptiv_face_id.json"
+            }
+        ],
+        "aptiv_dms": [
+            {
+                "name":"aptiv_dms",
+                "cc": "gcc-linaro-5.3-2016.02-x86_64_arm-linux-gnueabihf",
+                "arch": "armv7l",
+                "os": "Linux",
+                "platform": "tda2",
+                "opencv": "armv7l-tda2-opencv-static-withffmpeg-3.4.7",
+                "opencv-embedded": "Linux-armv7l-gcc5.4-3.4.7-mini-static",
+                "hal": "tda2sx_aptiv_0144",
+                "minfer": "armv7-linux-gcc7.2-static",
+                "minfer_git_sha": "6361955492e1",
+                "model": "aptivdms_1_0_0.json"
+            },
+            {
+                "name":"aptiv_dms",
+                "cc": "gcc-6.3.1-linaro-Xarmv8-linux",
+                "arch": "aarch64",
+                "os": "Linux",
+                "platform": "s32v",
+                "opencv": "Linux-x86_64-gcc5.4-static",
+                "opencv-embedded": "Linux-aarch64-gcc7.2-3.4.7-mini-static",
+                "hal": "nxp_s32v_qt0144",
+                "minfer": "aarch64-linux-gcc7.2-static",
+                "model": "aptivdms_1_0_0.json"
+            },
+            {
+                "name":"aptiv_dms",
+                "arch": "x86_64",
+                "os": "Linux",
+                "platform": "x86_64",
+                "cc": "nil",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-x64-gcc5.4-3.4.7-mini-static",
+                "hal": "x86_64",
+                "minfer": "x86_64-linux-gcc5.4",
+                "model": "aptivdms_1_0_0.json"
+            }
+        ],
+        "aptivgw_dms": [
+            {
+                "name":"aptivgw_dms",
+                "cc": "gcc-linaro-5.3-2016.02-x86_64_arm-linux-gnueabihf",
+                "arch": "armv7l",
+                "os": "Linux",
+                "platform": "tda2",
+                "opencv": "armv7l-tda2-opencv-static-withffmpeg-3.4.7",
+                "opencv-embedded": "Linux-armv7l-gcc5.4-3.4.7-mini-static",
+                "hal": "tda2sx_aptiv_0144",
+                "minfer": "armv7-linux-gcc7.2-static",
+                "minfer_git_sha": "bb3684b5",
+                "model": "aptivgw_1_0_0.json"
+            },
+            {
+                "name":"aptivgw_dms",
+                "arch": "x86_64",
+                "os": "Linux",
+                "platform": "x86_64",
+                "cc": "nil",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-x64-gcc5.4-3.4.7-mini-static",
+                "hal": "x86_64",
+                "minfer": "x86_64-linux-gcc5.4",
+                "model": "aptivgw_1_0_0.json"
+            }
+        ],
+        "s32v_demo": [
+            {
+                "name":"s32v_demo",
+                "cc": "gcc-6.3.1-linaro-Xarmv8-linux",
+                "arch": "aarch64",
+                "os": "Linux",
+                "platform": "s32v",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-aarch64-gcc7.2-3.4.7-mini-static",
+                "hal": "nxp_s32v_qt0144",
+                "minfer": "aarch64-linux-gcc7.2-airunner-static",
+                "model": "s32vdemo_100.json"
+            }
+        ],
+        "ns_dms": [
+            {
+                "name":"ns_dms",
+                "cc": "gcc-6.3.1-linaro-Xarmv8-linux",
+                "arch": "aarch64",
+                "os": "Linux",
+                "platform": "s32v",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-aarch64-gcc7.2-3.4.7-mini-static",
+                "hal": "nxp_s32v_qt0144",
+                "minfer": "aarch64-linux-gcc7.2-airunner-static",
+                "model": "ns_1_0_0.json"
+            }
+        ],
+        "m56_dms_a2": [
+            {
+                "name":"m56_dms_a2",
+                "cc": "clang-x86_64-7.0.1",
+                "arch": "android-aarch64",
+                "os": "android",
+                "platform": "mtk8665",
+                "opencv": "Linux-android-aarch64",
+                "opencv-embedded": "Linux-android-aarch67-clang701-mini-3.4.7-static",
+                "hal": "nxp_s32v_qt0144",
+                "minfer": "aarch64-android-clang6.0-opencl",
+                "model": "m56_dms.json",
+                "build_cmd" : {"export_origin_model" : true} 
+            },
+            {
+                "name":"m56_dms_a2",
+                "cc": "gcc-6.3.1-linaro-Xarmv8-linux",
+                "arch": "aarch64",
+                "os": "Linux",
+                "platform": "cv22",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-aarch64-gcc7.2-3.4.7-mini-static",
+                "hal": "nxp_s32v_qt0144",
+                "minfer": "aarch64-linux-gcc7.2-static",
+                "model": "m56_dms_cpu_a2.json",
+                "build_cmd" : {"export_origin_model" : true} 
+            },
+            {
+                "name":"m56_dms_a2",
+                "arch": "x86_64",
+                "os": "Linux",
+                "platform": "x86_64",
+                "cc": "nil",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-x64-gcc5.4-3.4.7-mini-static",
+                "hal": "x86_64",
+                "minfer": "x86_64-linux-gcc5.4",
+                "model": "m56_dms_cpu_a2.json",
+                "build_cmd" : {"export_origin_model" : true} 
+            }
+        ],
+        "m56_dms_c1": [
+            {
+                "name":"m56_dms_c1",
+                "cc": "gcc-6.3.1-linaro-Xarmv8-linux",
+                "arch": "aarch64",
+                "os": "Linux",
+                "platform": "cv22",
+                "opencv": "system-runtime",
+                "opencv-embedded": "Linux-aarch64-gcc7.2-3.4.7-mini-static",
+                "hal": "nxp_s32v_qt0144",
+                "minfer": "aarch64-linux-gcc7.2-static",
+                "model": "m56_dms_cpu_c1.json",
+                "build_cmd" : {"export_origin_model" : true} 
+            }
+        ]
+    }
+}
