@@ -200,3 +200,10 @@ https://blog.csdn.net/skysongkran/article/details/82012698
 
 《编写高质量代码：改善C++程序的150个建议》读书笔记(1)
 http://insaneguy.me/2014/05/22/150_tips_on_writing_high_quality_cpp_codes_1/
+
+shared_ptr如何避免循环引用
+shared_ptr是强引用，会计数，weak_ptr是弱引用，不会计数，
+为了避免shared_ptr对象相互只有导致循环引用，通常做法是：
+owner持有指向child的shared_ptr，child持有指向owner的weak_ptr。
+比如Observerable和Observer的关系
+
