@@ -1,5 +1,6 @@
 * cpp list
 https://www.cnblogs.com/inception6-lxc/p/8686156.html
+https://blog.csdn.net/qq_37934101/article/details/81365449
 
 * auto 推导原理
 http://c.biancheng.net/view/3718.html
