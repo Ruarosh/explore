@@ -1,0 +1,44 @@
+
+
+
+
+
+
+
+
+
+
+
+* tree 左右视图
+
+def view(root):
+    if root == None:
+        return
+    level = 0
+    stack = []
+    #rightview(root,stack,level)
+    leftview(root,stack,level)
+    print stack
+#二叉树左视图
+#打印每一层的第一个节点
+def leftview(root,stack,level):
+    if root == None:
+        return
+    if level == len(stack): #判断是不是每一层的第一个节点
+        stack.append(root.value)
+    leftview(root.left,stack,level+1)
+    leftview(root.right,stack,level+1)
+
+#二叉树右视图
+#打印每一层的最后一个节点
+def rightview(root,stack,level):
+    if root == None:
+        return
+    if level == len(stack): #判断是不是每一层的最后一个节点
+        stack.append(root.value)
+
+    rightview(root.right,stack,level+1)
+    rightview(root.left,stack,level+1)
+
+基本遍历的递归非递归版本
+https://blog.csdn.net/qq_32690999/article/details/80484440

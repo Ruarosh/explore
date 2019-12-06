@@ -1,0 +1,11 @@
+* cpp list
+https://www.cnblogs.com/inception6-lxc/p/8686156.html
+
+* auto 推导原理
+http://c.biancheng.net/view/3718.html
+
+* 构造函数不能为需函数
+https://www.cnblogs.com/youxin/p/4355946.html
+
+
+
