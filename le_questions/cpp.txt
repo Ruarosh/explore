@@ -1,6 +1,24 @@
 * cpp list
 https://www.cnblogs.com/inception6-lxc/p/8686156.html
 https://blog.csdn.net/qq_37934101/article/details/81365449
+拷贝构造参数必须为引用的解释：避免无限递归调用
+https://www.cnblogs.com/this-543273659/archive/2011/09/18/2180575.html
+string实现
+https://www.cnblogs.com/beixiaobei/p/10914267.html
+STL的详细分析
+https://blog.csdn.net/zzb2019/article/details/81195294
+
+
+多进程多线程
+https://blog.csdn.net/zhouchunyue/article/details/79271869
+https://blog.csdn.net/qq_33573235/article/details/78013397
+
+
+关于字节序(x86常用小端序，网络传输用大端序，大端序更符合认知)
+https://www.cnblogs.com/LuckCoder/p/10384950.html
+const成员说明
+https://www.cnblogs.com/cthon/p/9178701.html
+
 
 * auto 推导原理
 http://c.biancheng.net/view/3718.html
